@@ -1,16 +1,29 @@
 import { useState, useEffect } from 'react'
+import Person from './components/Person'
 import axios from 'axios'
+
+import personService from './services/customers'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
-  useEffect(() => {
+
+  const toggleDeleteOf = person => {
+    if(window.confirm(`Delete ${person.name} ?`)){
+    const id = person.id
     axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+      .delete(`http://localhost:3001/persons/${id}`)
+      .then(() => console.log('delete succesful'))
+    } 
+  }
+
+  useEffect(() => {
+    personService
+      .getAll()
+        .then(initialNotes => {
+        setPersons(initialNotes)
       })
   }, [])
 
@@ -36,17 +49,17 @@ const App = () => {
     if (persons.some(person => person['name'] === newName) === true) {
       window.alert(nameObject.name + " is already added to phonebook")
     } else {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      personService
+        .create(nameObject)
+        .then(returnedNote => {
+          setPersons(persons.concat(returnedNote))
+          setNewName('')
+          setNewNumber('')
+        })
+      
+      
     }
 
-  }
-
-  const Person = ({ person }) => {
-    return (
-      <p>{person.name} {person.number}</p>
-    )
   }
 
   return (
@@ -59,7 +72,10 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
         {persons.map(person =>
-          <Person key={person.name} person={person} />
+          <Person
+            key={person.name}
+            person={person}
+            toggleDelete={() => toggleDeleteOf(person)} />
           )}
     </div>
   )
