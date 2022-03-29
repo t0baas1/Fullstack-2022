@@ -3,11 +3,13 @@ import Person from './components/Person'
 import axios from 'axios'
 
 import personService from './services/customers'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [addMessage, setAddMessage] = useState(null)
 
 
   const toggleDeleteOf = person => {
@@ -55,16 +57,18 @@ const App = () => {
           setPersons(persons.concat(returnedNote))
           setNewName('')
           setNewNumber('')
+          setAddMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setAddMessage(null)
+          }, 5000)
         })
-      
-      
     }
-
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={addMessage} />
       <form onSubmit={addPerson}>
         <div>name: <input value={newName} onChange={handleNameChange}/></div>
         <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
