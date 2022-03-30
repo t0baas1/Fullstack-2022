@@ -33,7 +33,7 @@ app.get('/api/persons', (request, response) =>{
     response.json(persons)
 })
 
-app.get('/api/persons/info', (request, response) => {
+app.get('/info', (request, response) => {
     response.send(`Phonebook has info of ${persons.length} people</br>${Date()}`)
 })
 
