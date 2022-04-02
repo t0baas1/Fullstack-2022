@@ -16,7 +16,7 @@ const App = () => {
     if(window.confirm(`Delete ${person.name} ?`)){
     const id = person.id
     axios
-      .delete(`http://localhost:3001/api/persons/${id}`)
+      .delete(`/api/persons/${id}`)
       .then(() => console.log('delete succesful'))
     } 
   }
