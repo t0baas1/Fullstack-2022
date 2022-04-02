@@ -29,7 +29,6 @@ const App = () => {
       })
   }, [])
 
-  console.log(persons)
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
