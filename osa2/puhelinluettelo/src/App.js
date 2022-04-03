@@ -4,12 +4,14 @@ import axios from 'axios'
 
 import personService from './services/customers'
 import Notification from './components/Notification'
+import Error from './components/Error'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [addMessage, setAddMessage] = useState(null)
+  const [addError, setErrorMessage] = useState(null)
 
 
   const toggleDeleteOf = person => {
@@ -61,12 +63,20 @@ const App = () => {
             setAddMessage(null)
           }, 5000)
         })
+        .catch(error => {
+          console.log(error.response.data.error)
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error message={addError} />
       <Notification message={addMessage} />
       <form onSubmit={addPerson}>
         <div>name: <input value={newName} onChange={handleNameChange}/></div>
