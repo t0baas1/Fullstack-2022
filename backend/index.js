@@ -56,7 +56,7 @@ app.delete('/api/notes/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
     Note.findById(request.params.id)
         .then(note => {
             if (note) {
